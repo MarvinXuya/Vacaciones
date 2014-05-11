@@ -20,12 +20,11 @@ public class colaboradoresDAO {
 
     private String LOAD_ALL = "exec buscarColaborador null;";
     private String LOAD_SOME = "exec buscarColaborador ?;";
-    private String INSERT_PERSON = "EXEC agregarColaboradores ?, ?, ?, ?, ?,?,?, ?, ?, ?,?,?,?";
-    private String UPDATE_PERSON = "EXEC modificarColaboradores ?, ?, ?, ?, ?, ?,?,?, ?, ?, ?,?,?,?";
+    private String INSERT_PERSON = "EXEC agregarColaboradores ?, ?, ?, ?, ?,?,?, ?, ?, ?,?,?,?,?,?,?";
+    private String UPDATE_PERSON = "EXEC modificarColaboradores ?, ?, ?, ?, ?, ?,?,?, ?, ?, ?,?,?,?,?,?,?";
     private String FIND_PERSON_VACATION = "exec RegistroVacaciones ?;";
     private String FIND_PERSON_AVAILABLE_DAY = "exec diasDisponibles ?;";
     private String LOAD_BY_NAME = "exec buscarColaboradorNombre ?;";
-    
     private String DELETE_PERSON = "exec colaboradorInactivo ?";
     private String codigo;
     private String nombre;
@@ -41,6 +40,9 @@ public class colaboradoresDAO {
     private String observaciones;
     private String otroProyecto;
     private String disponible;
+    private String fechaInicioLaboral;
+    private String fechaFinalLaboral;
+    private String firmaAccion;
 
     public void lVars() {
         codigo = null;
@@ -57,6 +59,9 @@ public class colaboradoresDAO {
         observaciones = null;
         otroProyecto = null;
         disponible = null;
+        fechaInicioLaboral = null;
+        fechaFinalLaboral = null;
+        firmaAccion = null;
 
     }
 
@@ -75,12 +80,15 @@ public class colaboradoresDAO {
             ps.setString(11, colaborador.getSubproyecto2());
             ps.setString(12, colaborador.getObservaciones());
             ps.setString(13, colaborador.getOtroProyecto());
+            ps.setString(14, colaborador.getFechaInicioLaboral());
+            ps.setString(15, colaborador.getFechaFinalLaboral());
+            ps.setString(16, colaborador.getFirmaAccion());
             ps.execute();
         }
         connection.close();
     }
 
-    public void ModificarColaboradores(Colaboradores colaborador,String codigoOld, Connection connection) throws Exception {
+    public void ModificarColaboradores(Colaboradores colaborador, String codigoOld, Connection connection) throws Exception {
         try (PreparedStatement ps = connection.prepareStatement(UPDATE_PERSON)) {
             ps.setString(1, colaborador.getCodigo());
             ps.setString(2, codigoOld);
@@ -95,7 +103,10 @@ public class colaboradoresDAO {
             ps.setString(11, colaborador.getSubproyecto());
             ps.setString(12, colaborador.getSubproyecto2());
             ps.setString(13, colaborador.getObservaciones());
-            ps.setString(14, colaborador.getOtroProyecto());            
+            ps.setString(14, colaborador.getOtroProyecto());
+            ps.setString(15, colaborador.getFechaInicioLaboral());
+            ps.setString(16, colaborador.getFechaFinalLaboral());
+            ps.setString(17, colaborador.getFirmaAccion());
             ps.execute();
         }
         connection.close();
@@ -109,7 +120,7 @@ public class colaboradoresDAO {
         connection.close();
     }
 
-        public int BuscarColaboradoresDiasDisponibles(String codigo, Connection connection) throws Exception {
+    public int BuscarColaboradoresDiasDisponibles(String codigo, Connection connection) throws Exception {
         int diasDisponibles;
         try (PreparedStatement ps = connection.prepareStatement(FIND_PERSON_AVAILABLE_DAY)) {
             ps.setString(1, codigo);
@@ -126,10 +137,10 @@ public class colaboradoresDAO {
     public List<Colaboradores> listadoDeColaboradores(Connection connection) throws Exception {
         lVars();
         PreparedStatement ps = connection.prepareStatement(LOAD_ALL);
-        
+
         List<Colaboradores> colaboradores = new ArrayList<Colaboradores>();
         try (ResultSet rs = ps.executeQuery()) {
-            Colaboradores colaborador=null;
+            Colaboradores colaborador = null;
             colaboradores = new ArrayList<Colaboradores>();
             while (rs.next()) {
                 codigo = rs.getString("codigo");
@@ -145,8 +156,11 @@ public class colaboradoresDAO {
                 subproyecto2 = rs.getString("subproyecto2");
                 observaciones = rs.getString("observaciones");
                 otroProyecto = rs.getString("otroProyecto");
+                fechaInicioLaboral = rs.getString("fechaInicioLaboral");
+                fechaFinalLaboral = rs.getString("fechaFinalLaboral");
+                firmaAccion = rs.getString("firmaAccion");
                 //disponible = rs.getString("disponible");
-                colaborador = new Colaboradores(codigo, nombre, apellido, puesto, clasificacionPuesto, clasificacionCodigo, porcentajeDedicacion, sitio, proyecto, subproyecto, subproyecto2, observaciones,otroProyecto);
+                colaborador = new Colaboradores(codigo, nombre, apellido, puesto, clasificacionPuesto, clasificacionCodigo, porcentajeDedicacion, sitio, proyecto, subproyecto, subproyecto2, observaciones, otroProyecto, fechaInicioLaboral, fechaFinalLaboral, firmaAccion);
                 colaboradores.add(colaborador);
             }
         }
@@ -157,7 +171,7 @@ public class colaboradoresDAO {
         lVars();
         Colaboradores colaborador = null;
         PreparedStatement ps = connection.prepareStatement(LOAD_BY_NAME);
-        ps.setString(1, nombreb);        
+        ps.setString(1, nombreb);
         List<Colaboradores> colaboradores;
         try (ResultSet rs = ps.executeQuery()) {
             colaboradores = new ArrayList<Colaboradores>();
@@ -175,8 +189,11 @@ public class colaboradoresDAO {
                 subproyecto2 = rs.getString("subproyecto2");
                 observaciones = rs.getString("observaciones");
                 otroProyecto = rs.getString("otroProyecto");
+                fechaInicioLaboral = rs.getString("fechaInicioLaboral");
+                fechaFinalLaboral = rs.getString("fechaFinalLaboral");
+                firmaAccion = rs.getString("firmaAccion");
                 //disponible = rs.getString("disponible");
-                colaborador = new Colaboradores(codigo, nombre, apellido, puesto, clasificacionPuesto, clasificacionCodigo, porcentajeDedicacion, sitio, proyecto, subproyecto, subproyecto2, observaciones,otroProyecto);
+                colaborador = new Colaboradores(codigo, nombre, apellido, puesto, clasificacionPuesto, clasificacionCodigo, porcentajeDedicacion, sitio, proyecto, subproyecto, subproyecto2, observaciones, otroProyecto, fechaInicioLaboral, fechaFinalLaboral, firmaAccion);
                 colaboradores.add(colaborador);
             }
             int rowcount = rs.getRow();
@@ -210,8 +227,11 @@ public class colaboradoresDAO {
                 subproyecto2 = rs.getString("subproyecto2");
                 observaciones = rs.getString("observaciones");
                 otroProyecto = rs.getString("otroProyecto");
+                fechaInicioLaboral = rs.getString("fechaInicioLaboral");
+                fechaFinalLaboral = rs.getString("fechaFinalLaboral");
+                firmaAccion = rs.getString("firmaAccion");
                 //disponible = rs.getString("disponible");
-                colaborador = new Colaboradores(codigo, nombre, apellido, puesto, clasificacionPuesto, clasificacionCodigo, porcentajeDedicacion, sitio, proyecto, subproyecto, subproyecto2, observaciones,otroProyecto);
+                colaborador = new Colaboradores(codigo, nombre, apellido, puesto, clasificacionPuesto, clasificacionCodigo, porcentajeDedicacion, sitio, proyecto, subproyecto, subproyecto2, observaciones, otroProyecto, fechaInicioLaboral, fechaFinalLaboral, firmaAccion);
                 colaboradores.add(colaborador);
             }
             int rowcount = rs.getRow();

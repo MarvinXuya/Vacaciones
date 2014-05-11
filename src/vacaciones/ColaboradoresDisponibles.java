@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package vacaciones;
 
 /**
@@ -11,10 +10,11 @@ package vacaciones;
  * @author mxuya
  */
 public class ColaboradoresDisponibles {
-        String codigo;
+
+    String codigo;
     String nombre;
     String apellido;
-    String puesto;			
+    String puesto;
     String clasificacionPuesto;
     String clasificacionCodigo;
     String porcentajeDedicacion;
@@ -25,12 +25,11 @@ public class ColaboradoresDisponibles {
     String observaciones;
     String otroProyecto;
     String disponible;
-    
+    String fechaInicioLaboral;
+    String fechaFinalLaboral;
+    String firmaAccion;
 
-    
-    
-
-    public ColaboradoresDisponibles(String codigo, String nombre, String apellido, String puesto, String clasificacionPuesto, String clasificacionCodigo, String porcentajeDedicacion, String sitio, String proyecto, String subproyecto, String subproyecto2, String observaciones, String otroProyecto, String disponible) {
+    public ColaboradoresDisponibles(String codigo, String nombre, String apellido, String puesto, String clasificacionPuesto, String clasificacionCodigo, String porcentajeDedicacion, String sitio, String proyecto, String subproyecto, String subproyecto2, String observaciones, String otroProyecto, String disponible,String fechaInicioLaboral, String fechaFinalLaboral,String firmaAccion) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -45,11 +44,12 @@ public class ColaboradoresDisponibles {
         this.observaciones = observaciones;
         this.otroProyecto = otroProyecto;
         this.disponible = disponible;
+        this.fechaInicioLaboral = fechaInicioLaboral;
+        this.fechaFinalLaboral = fechaFinalLaboral;
+        this.firmaAccion = firmaAccion;
     }
-    
 
-    
-    public ColaboradoresDisponibles(String nombre, String apellido, String puesto, String clasificacionPuesto, String clasificacionCodigo, String porcentajeDedicacion, String sitio, String proyecto, String subproyecto, String subproyecto2, String observaciones, String otroProyecto) {        
+    public ColaboradoresDisponibles(String nombre, String apellido, String puesto, String clasificacionPuesto, String clasificacionCodigo, String porcentajeDedicacion, String sitio, String proyecto, String subproyecto, String subproyecto2, String observaciones, String otroProyecto,String disponible,String fechaInicioLaboral, String fechaFinalLaboral,String firmaAccion) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.puesto = puesto;
@@ -62,14 +62,40 @@ public class ColaboradoresDisponibles {
         this.subproyecto2 = subproyecto2;
         this.observaciones = observaciones;
         this.otroProyecto = otroProyecto;
+        this.disponible = disponible;
+        this.fechaInicioLaboral = fechaInicioLaboral;
+        this.fechaFinalLaboral = fechaFinalLaboral;
+        this.firmaAccion = firmaAccion;
 
     }
 
+    public String getFechaInicioLaboral() {
+        return fechaInicioLaboral;
+    }
+
+    public void setFechaInicioLaboral(String fechaInicioLaboral) {
+        this.fechaInicioLaboral = fechaInicioLaboral;
+    }
+
+    public String getFechaFinalLaboral() {
+        return fechaFinalLaboral;
+    }
+
+    public void setFechaFinalLaboral(String fechaFinalLaboral) {
+        this.fechaFinalLaboral = fechaFinalLaboral;
+    }
+
+    public String getFirmaAccion() {
+        return firmaAccion;
+    }
+
+    public void setFirmaAccion(String firmaAccion) {
+        this.firmaAccion = firmaAccion;
+    }
+       
     public String getDisponible() {
         return disponible;
     }
-
-
 
     public String getOtroProyecto() {
         return otroProyecto;
@@ -94,7 +120,7 @@ public class ColaboradoresDisponibles {
     public void setSubproyecto2(String subproyecto2) {
         this.subproyecto2 = subproyecto2;
     }
-    
+
     public String getCodigo() {
         return codigo;
     }

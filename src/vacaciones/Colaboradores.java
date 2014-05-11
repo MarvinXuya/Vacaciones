@@ -46,12 +46,14 @@ public class Colaboradores {
     String observaciones;
     String otroProyecto;
     String disponible;
-    
+    String fechaInicioLaboral;
+    String fechaFinalLaboral;
+    String firmaAccion;
 
     
     
 
-    public Colaboradores(String codigo, String nombre, String apellido, String puesto, String clasificacionPuesto, String clasificacionCodigo, String porcentajeDedicacion, String sitio, String proyecto, String subproyecto, String subproyecto2, String observaciones, String otroProyecto) {
+    public Colaboradores(String codigo, String nombre, String apellido, String puesto, String clasificacionPuesto, String clasificacionCodigo, String porcentajeDedicacion, String sitio, String proyecto, String subproyecto, String subproyecto2, String observaciones, String otroProyecto,String fechaInicioLaboral, String fechaFinalLaboral,String firmaAccion) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -65,12 +67,15 @@ public class Colaboradores {
         this.subproyecto2 = subproyecto2;
         this.observaciones = observaciones;
         this.otroProyecto = otroProyecto;
+        this.fechaInicioLaboral = fechaInicioLaboral;
+        this.fechaFinalLaboral = fechaFinalLaboral;
+        this.firmaAccion = firmaAccion;
 //        this.disponible = disponible;
     }
     
 
     
-    public Colaboradores(String nombre, String apellido, String puesto, String clasificacionPuesto, String clasificacionCodigo, String porcentajeDedicacion, String sitio, String proyecto, String subproyecto, String subproyecto2, String observaciones, String otroProyecto) {        
+    public Colaboradores(String nombre, String apellido, String puesto, String clasificacionPuesto, String clasificacionCodigo, String porcentajeDedicacion, String sitio, String proyecto, String subproyecto, String subproyecto2, String observaciones, String otroProyecto,String fechaInicioLaboral, String fechaFinalLaboral,String firmaAccion) {        
         this.nombre = nombre;
         this.apellido = apellido;
         this.puesto = puesto;
@@ -83,14 +88,40 @@ public class Colaboradores {
         this.subproyecto2 = subproyecto2;
         this.observaciones = observaciones;
         this.otroProyecto = otroProyecto;
+        this.fechaInicioLaboral = fechaInicioLaboral;
+        this.fechaFinalLaboral = fechaFinalLaboral;
+        this.firmaAccion = firmaAccion;
 
     }
 
+    public String getFechaInicioLaboral() {
+        return fechaInicioLaboral;
+    }
+
+    public void setFechaInicioLaboral(String fechaInicioLaboral) {
+        this.fechaInicioLaboral = fechaInicioLaboral;
+    }
+
+    public String getFechaFinalLaboral() {
+        return fechaFinalLaboral;
+    }
+
+    public void setFechaFinalLaboral(String fechaFinalLaboral) {
+        this.fechaFinalLaboral = fechaFinalLaboral;
+    }
+
+    public String getFirmaAccion() {
+        return firmaAccion;
+    }
+
+    public void setFirmaAccion(String firmaAccion) {
+        this.firmaAccion = firmaAccion;
+    }
+    
+    
     public String getDisponible() {
         return disponible;
     }
-
-
 
     public String getOtroProyecto() {
         return otroProyecto;

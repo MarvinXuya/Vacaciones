@@ -171,7 +171,7 @@ public class Excel {
             //public void actualizar(){
             try {
                 HSSFWorkbook workbook;
-JOptionPane.showMessageDialog(null, tipoDocumento);
+                //JOptionPane.showMessageDialog(null, tipoDocumento); //--Para ver el tipo de documento que se generará
                 if (tipoDocumento == 0) {//factura = 1 -- planilla = 0
                     if (verificarexcel() == true) {
                         try (FileInputStream file = new FileInputStream(new File(System.getProperty("user.dir") + "\\DRH7.xls"))) {
@@ -356,5 +356,4 @@ JOptionPane.showMessageDialog(null, tipoDocumento);
 
         return null;
     }
-
 }

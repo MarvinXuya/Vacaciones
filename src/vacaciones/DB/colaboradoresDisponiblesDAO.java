@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package vacaciones.DB;
 
 import java.sql.Connection;
@@ -19,6 +18,7 @@ import vacaciones.ColaboradoresDisponibles;
  * @author mxuya
  */
 public class colaboradoresDisponiblesDAO {
+
     private String LOAD_ALL = "exec buscarColaborador null;";
     private String LOAD_SOME = "exec buscarColaborador ?;";
     private String LOAD_BY_NAME = "exec buscarColaboradorNombre ?;";
@@ -36,6 +36,9 @@ public class colaboradoresDisponiblesDAO {
     private String observaciones;
     private String otroProyecto;
     private String disponible;
+    private String fechaInicioLaboral;
+    private String fechaFinalLaboral;
+    private String firmaAccion;
 
     public void lVars() {
         codigo = null;
@@ -52,24 +55,19 @@ public class colaboradoresDisponiblesDAO {
         observaciones = null;
         otroProyecto = null;
         disponible = null;
+        fechaInicioLaboral = null;
+        fechaFinalLaboral = null;
+        firmaAccion = null;
 
     }
-
-
-
-
-
-
-
- 
 
     public List<ColaboradoresDisponibles> listadoDeColaboradores(Connection connection) throws Exception {
         lVars();
         PreparedStatement ps = connection.prepareStatement(LOAD_ALL);
-        
+
         List<ColaboradoresDisponibles> colaboradores = new ArrayList<ColaboradoresDisponibles>();
         try (ResultSet rs = ps.executeQuery()) {
-            ColaboradoresDisponibles colaborador=null;
+            ColaboradoresDisponibles colaborador = null;
             colaboradores = new ArrayList<ColaboradoresDisponibles>();
             while (rs.next()) {
                 codigo = rs.getString("codigo");
@@ -86,7 +84,10 @@ public class colaboradoresDisponiblesDAO {
                 observaciones = rs.getString("observaciones");
                 otroProyecto = rs.getString("otroProyecto");
                 disponible = rs.getString("disponible");
-                colaborador = new ColaboradoresDisponibles(codigo, nombre, apellido, puesto, clasificacionPuesto, clasificacionCodigo, porcentajeDedicacion, sitio, proyecto, subproyecto, subproyecto2, observaciones,otroProyecto,disponible);
+                fechaInicioLaboral = rs.getString("fechaInicioLaboral");
+                fechaFinalLaboral = rs.getString("fechaFinalLaboral");
+                firmaAccion = rs.getString("firmaAccion");
+                colaborador = new ColaboradoresDisponibles(codigo, nombre, apellido, puesto, clasificacionPuesto, clasificacionCodigo, porcentajeDedicacion, sitio, proyecto, subproyecto, subproyecto2, observaciones, otroProyecto, disponible, fechaInicioLaboral, fechaFinalLaboral, firmaAccion);
                 colaboradores.add(colaborador);
             }
         }
@@ -97,7 +98,7 @@ public class colaboradoresDisponiblesDAO {
         lVars();
         ColaboradoresDisponibles colaborador = null;
         PreparedStatement ps = connection.prepareStatement(LOAD_BY_NAME);
-        ps.setString(1, nombreb);        
+        ps.setString(1, nombreb);
         List<ColaboradoresDisponibles> colaboradores;
         try (ResultSet rs = ps.executeQuery()) {
             colaboradores = new ArrayList<ColaboradoresDisponibles>();
@@ -116,7 +117,10 @@ public class colaboradoresDisponiblesDAO {
                 observaciones = rs.getString("observaciones");
                 otroProyecto = rs.getString("otroProyecto");
                 disponible = rs.getString("disponible");
-                colaborador = new ColaboradoresDisponibles(codigo, nombre, apellido, puesto, clasificacionPuesto, clasificacionCodigo, porcentajeDedicacion, sitio, proyecto, subproyecto, subproyecto2, observaciones,otroProyecto,disponible);
+                fechaInicioLaboral = rs.getString("fechaInicioLaboral");
+                fechaFinalLaboral = rs.getString("fechaFinalLaboral");
+                firmaAccion = rs.getString("firmaAccion");                
+                colaborador = new ColaboradoresDisponibles(codigo, nombre, apellido, puesto, clasificacionPuesto, clasificacionCodigo, porcentajeDedicacion, sitio, proyecto, subproyecto, subproyecto2, observaciones, otroProyecto, disponible, fechaInicioLaboral, fechaFinalLaboral, firmaAccion);
                 colaboradores.add(colaborador);
             }
             int rowcount = rs.getRow();
@@ -151,7 +155,10 @@ public class colaboradoresDisponiblesDAO {
                 observaciones = rs.getString("observaciones");
                 otroProyecto = rs.getString("otroProyecto");
                 disponible = rs.getString("disponible");
-                colaborador = new ColaboradoresDisponibles(codigo, nombre, apellido, puesto, clasificacionPuesto, clasificacionCodigo, porcentajeDedicacion, sitio, proyecto, subproyecto, subproyecto2, observaciones,otroProyecto,disponible);
+                fechaInicioLaboral = rs.getString("fechaInicioLaboral");
+                fechaFinalLaboral = rs.getString("fechaFinalLaboral");
+                firmaAccion = rs.getString("firmaAccion");                
+                colaborador = new ColaboradoresDisponibles(codigo, nombre, apellido, puesto, clasificacionPuesto, clasificacionCodigo, porcentajeDedicacion, sitio, proyecto, subproyecto, subproyecto2, observaciones, otroProyecto, disponible, fechaInicioLaboral, fechaFinalLaboral, firmaAccion);
                 colaboradores.add(colaborador);
             }
             int rowcount = rs.getRow();
@@ -162,6 +169,4 @@ public class colaboradoresDisponiblesDAO {
         }
         return colaboradores;
     }
-
-  
 }
