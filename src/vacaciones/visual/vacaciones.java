@@ -14,6 +14,7 @@ import java.text.DateFormat;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
@@ -26,12 +27,14 @@ import vacaciones.Conexion;
 import vacaciones.Calculos;
 
 import javax.swing.table.DefaultTableModel;
+import org.apache.poi.hssf.record.formula.functions.T;
 
 import vacaciones.DB.colaboradoresDisponiblesDAO;
 import vacaciones.DB.colaboradoresDAO;
 import vacaciones.DB.vacacionesDAO;
 import vacaciones.Excel;
 import vacaciones.Vacaciones;
+import javax.swing.AbstractListModel;
 
 /**
  *
@@ -57,6 +60,43 @@ public class vacaciones extends javax.swing.JFrame {
     private Integer tipoCampus = null;
     private String firma = null;
     vacacionesDAO dao = new vacacionesDAO();
+    
+    
+    private void fillComboSign() {
+String verificador = null;
+        try {
+                    List<Colaboradores> colaboradores = col.listadoDeFirmantes(Conexion.getConnection());
+                    for (Colaboradores c : colaboradores) {
+                        
+                        jComboBox3.addItem("Lic. "+c.getNombre()+" "+c.getApellido());
+                        ///jLabel1.setText(c.getNombre());
+                        //jLabel2.setText(c.getApellido());
+                        //jLabel12.setText(c.getDisponible());
+                        //verificador = c.getNombre();
+                        //colaboradoresDAO col = new colaboradoresDAO();
+                        // -----> se agregan 20 dias por año actual <------//
+                        //col.BuscarColaboradoresAgregarVacaciones(codigoBuscar, Conexion.getConnection());
+//                        int disp = col.BuscarColaboradoresDiasDisponibles(codigo, Conexion.getConnection());
+                        //jLabel12.setText(Integer.toString(col.BuscarColaboradoresDiasDisponibles(codigoBuscar, Conexion.getConnection())));
+                    }
+                    //if (!(verificador == null)) {
+                        //jButton2.setText("Cancelar");
+                        //jTextField1.setEnabled(false);
+                        //try {
+                            //actualizarTabla(jTextField1.getText());
+                        //} catch (Exception ex) {
+                            //Logger.getLogger(home.class.getName()).log(Level.SEVERE, null, ex);
+                        //}
+                    //} else {
+                        jTextField1.setText(null);
+                    //}
+
+                } catch (Exception ex) {
+                    Logger.getLogger(vacaciones.class.getName()).log(Level.SEVERE, null, ex);
+                }       
+        
+        
+    }
 
     public void actualizarTabla(String codigo) throws Exception {
 
@@ -77,7 +117,7 @@ public class vacaciones extends javax.swing.JFrame {
         jTable1.getColumnModel().getColumn(3).setPreferredWidth(120);
         jTable1.getColumnModel().getColumn(4).setPreferredWidth(120);
         jTable1.getColumnModel().getColumn(5).setPreferredWidth(50);
-    }
+    }    
 
     private void buscarColaborador() {
         String verificador = null;
@@ -162,7 +202,7 @@ public class vacaciones extends javax.swing.JFrame {
         Model.addColumn("Días Vacaciones");
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
-
+        fillComboSign();
 
 
 

@@ -20,6 +20,7 @@ public class colaboradoresDAO {
 
     private String LOAD_ALL = "exec buscarColaborador null;";
     private String LOAD_SOME = "exec buscarColaborador ?;";
+    private String SIGN = "exec dbo.ColaboradoresFirman null";
     private String INSERT_PERSON = "EXEC agregarColaboradores ?, ?, ?, ?, ?,?,?, ?, ?, ?,?,?,?,?,?,?";
     private String UPDATE_PERSON = "EXEC modificarColaboradores ?, ?, ?, ?, ?, ?,?,?, ?, ?, ?,?,?,?,?,?,?";
     private String FIND_PERSON_VACATION = "exec RegistroVacaciones ?;";
@@ -166,6 +167,39 @@ public class colaboradoresDAO {
         }
         return colaboradores;
     }
+
+     public List<Colaboradores> listadoDeFirmantes(Connection connection) throws Exception {
+        lVars();
+        PreparedStatement ps = connection.prepareStatement(SIGN);
+
+        List<Colaboradores> colaboradores = new ArrayList<Colaboradores>();
+        try (ResultSet rs = ps.executeQuery()) {
+            Colaboradores colaborador = null;
+            colaboradores = new ArrayList<Colaboradores>();
+            while (rs.next()) {
+                codigo = rs.getString("codigo");
+                nombre = rs.getString("nombre");
+                apellido = rs.getString("apellido");
+                puesto = rs.getString("puesto");
+                clasificacionPuesto = rs.getString("clasificacionPuesto");
+                clasificacionCodigo = rs.getString("clasificacionCodigo");
+                porcentajeDedicacion = rs.getString("porcentajeDedicacion");
+                sitio = rs.getString("sitio");
+                proyecto = rs.getString("proyecto");
+                subproyecto = rs.getString("subproyecto");
+                subproyecto2 = rs.getString("subproyecto2");
+                observaciones = rs.getString("observaciones");
+                otroProyecto = rs.getString("otroProyecto");
+                fechaInicioLaboral = rs.getString("fechaInicioLaboral");
+                fechaFinalLaboral = rs.getString("fechaFinalLaboral");
+                firmaAccion = rs.getString("firmaAccion");
+                //disponible = rs.getString("disponible");
+                colaborador = new Colaboradores(codigo, nombre, apellido, puesto, clasificacionPuesto, clasificacionCodigo, porcentajeDedicacion, sitio, proyecto, subproyecto, subproyecto2, observaciones, otroProyecto, fechaInicioLaboral, fechaFinalLaboral, firmaAccion);
+                colaboradores.add(colaborador);
+            }
+        }
+        return colaboradores;
+    }    
 
     public List<Colaboradores> listarColaboradorNombre(String nombreb, Connection connection) throws Exception {
         lVars();
