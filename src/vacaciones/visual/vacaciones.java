@@ -64,33 +64,12 @@ public class vacaciones extends javax.swing.JFrame {
     
     private void fillComboSign() {
 String verificador = null;
+jComboBox3.removeAllItems();
         try {
                     List<Colaboradores> colaboradores = col.listadoDeFirmantes(Conexion.getConnection());
-                    for (Colaboradores c : colaboradores) {
-                        
-                        jComboBox3.addItem("Lic. "+c.getNombre()+" "+c.getApellido());
-                        ///jLabel1.setText(c.getNombre());
-                        //jLabel2.setText(c.getApellido());
-                        //jLabel12.setText(c.getDisponible());
-                        //verificador = c.getNombre();
-                        //colaboradoresDAO col = new colaboradoresDAO();
-                        // -----> se agregan 20 dias por año actual <------//
-                        //col.BuscarColaboradoresAgregarVacaciones(codigoBuscar, Conexion.getConnection());
-//                        int disp = col.BuscarColaboradoresDiasDisponibles(codigo, Conexion.getConnection());
-                        //jLabel12.setText(Integer.toString(col.BuscarColaboradoresDiasDisponibles(codigoBuscar, Conexion.getConnection())));
-                    }
-                    //if (!(verificador == null)) {
-                        //jButton2.setText("Cancelar");
-                        //jTextField1.setEnabled(false);
-                        //try {
-                            //actualizarTabla(jTextField1.getText());
-                        //} catch (Exception ex) {
-                            //Logger.getLogger(home.class.getName()).log(Level.SEVERE, null, ex);
-                        //}
-                    //} else {
-                        jTextField1.setText(null);
-                    //}
-
+                    for (Colaboradores c : colaboradores) {                        
+                        jComboBox3.addItem("Lic. "+c.getNombre()+" "+c.getApellido());                         
+                    }                   
                 } catch (Exception ex) {
                     Logger.getLogger(vacaciones.class.getName()).log(Level.SEVERE, null, ex);
                 }       
