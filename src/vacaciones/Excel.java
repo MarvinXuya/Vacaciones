@@ -122,7 +122,7 @@ public class Excel {
     }
 
     public String generar(Date f1, Date f2, Date f3, Date f4, String codigo, int Dias, String rangoFechas, Date regresoLaborar, Date incioVacaciones, String elaboradoPor, Date fechaEmision, int tipoColaborador, int tipoDocumento, int tipoCampus, String firma) throws Exception {
-
+        //JOptionPane.showMessageDialog(null, firma);
         GregorianCalendar fInicio = new GregorianCalendar();
         DateFormat base = new SimpleDateFormat("yyyy-MM-dd");
         DateFormat display = new SimpleDateFormat("dd-MM-yyyy");
@@ -171,8 +171,8 @@ public class Excel {
             //public void actualizar(){
             try {
                 HSSFWorkbook workbook;
-                //JOptionPane.showMessageDialog(null, tipoDocumento); //--Para ver el tipo de documento que se generará
-                if (tipoDocumento == 0) {//factura = 1 -- planilla = 0
+                //JOptionPane.showMessageDialog(null, tipoColaborador); //--Para ver el tipo de documento que se generará
+                if (tipoColaborador == 0) {//factura = 1 -- planilla = 0
                     if (verificarexcel() == true) {
                         try (FileInputStream file = new FileInputStream(new File(System.getProperty("user.dir") + "\\DRH7.xls"))) {
                             workbook = new HSSFWorkbook(file);
@@ -254,7 +254,7 @@ public class Excel {
                             cell.setCellValue(rLaboral);
                             cell = sheet.getRow(44).getCell(2);
                             cell.setCellValue("Estaré tomando " + Dias + " día(s) de vacaciones 2014");
-                            cell = sheet.getRow(54).getCell(3);
+                            cell = sheet.getRow(54).getCell(2);
                             cell.setCellValue(firma);
                         }
                         try (FileOutputStream outFile = new FileOutputStream(new File(System.getProperty("user.dir") + "\\DRH7.xls"))) {
@@ -263,7 +263,7 @@ public class Excel {
                     }//Fin de validación de excel
                 }// Fin excel planilla
 
-                if (tipoDocumento == 1) {//factura = 1 -- planilla = 0
+                if (tipoColaborador == 1) {//factura = 1 -- planilla = 0
                     if (verificarexcelHonorarios() == true) {
 
                         try (FileInputStream file = new FileInputStream(new File(System.getProperty("user.dir") + "\\DRH8.xls"))) {
@@ -329,13 +329,27 @@ public class Excel {
                             cell.setCellValue(c.getOtroProyecto());
                             cell = sheet.getRow(35).getCell(2);
                             cell.setCellValue(Dias);
-                            cell = sheet.getRow(36).getCell(2);
-                            cell.setCellValue(rangoFechas);
+
+                            if (rangoFechas.contains(".")) {                                
+                                String part1 = rangoFechas.substring(0,rangoFechas.indexOf('.'));
+                                //System.out.println(part1);
+                                String part2 = rangoFechas.substring((rangoFechas.indexOf('.')+2),rangoFechas.length());
+                                //System.out.println(part2);
+                                cell = sheet.getRow(36).getCell(2);
+                                cell.setCellValue(part1);
+                                cell = sheet.getRow(37).getCell(2);
+                                cell.setCellValue(part2);
+                            } else {
+                                cell = sheet.getRow(36).getCell(2);
+                                cell.setCellValue(rangoFechas);
+                                cell = sheet.getRow(37).getCell(2);
+                                cell.setCellValue("");
+                            }
                             cell = sheet.getRow(36).getCell(16);
                             cell.setCellValue(rLaboral);
                             cell = sheet.getRow(44).getCell(2);
                             cell.setCellValue("Estaré tomando " + Dias + " día(s) de vacaciones 2014");
-                            cell = sheet.getRow(54).getCell(3);
+                            cell = sheet.getRow(54).getCell(2);
                             cell.setCellValue(firma);
                         }
                         try (FileOutputStream outFile = new FileOutputStream(new File(System.getProperty("user.dir") + "\\DRH8.xls"))) {
