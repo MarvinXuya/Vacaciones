@@ -34,6 +34,7 @@ import vacaciones.DB.colaboradoresDAO;
 import vacaciones.DB.vacacionesDAO;
 import vacaciones.Excel;
 import vacaciones.Vacaciones;
+import vacaciones.VacacionesMod;
 import javax.swing.AbstractListModel;
 
 /**
@@ -44,16 +45,9 @@ public class vacaciones extends javax.swing.JFrame {
 
     colaboradoresDisponiblesDAO colCD = new colaboradoresDisponiblesDAO();
     colaboradoresDAO col = new colaboradoresDAO();
-    private String codigo;
-    private String nombre;
-    private String apellido;
-    private String puesto;
-    private String clasificacionPuesto;
-    private String porcentajeDedicacion;
-    private String sitio;
-    private String proyecto;
-    private String subproyecto;
-    private String observaciones;
+    private String codigoMod = null;
+    private Date fechaEmisionMod = null;
+    private Date VacacionesAlMod = null;
     private String elaboradoPor = null;
     private Integer tipoColaborador = null;
     private Integer tipoDocumento = null;
@@ -61,8 +55,283 @@ public class vacaciones extends javax.swing.JFrame {
     private String firma = null;
     vacacionesDAO dao = new vacacionesDAO();
 
+    private void generar() {
+        firma = (String) jComboBox3.getSelectedItem();
+        tipoColaborador = jComboBox1.getSelectedIndex();
+        tipoCampus = jComboBox2.getSelectedIndex();
+        //JOptionPane.showMessageDialog(null, tipoCampus);
+        //factura = 1 -- planilla = 0
+        String f1 = null;
+        String f2 = null;
+        String f3 = null;
+        String f4 = null;
+        if (jCheckBox2.isSelected() == true) {
+            tipoDocumento = 1;//Borrador
+        } else {
+            tipoDocumento = 0;//DocumentoDirecto
+        }
+
+        boolean generar = false;
+        Format formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Format formatterDisplay = new SimpleDateFormat("dd-MM-yyyy");
+        DateFormat formatterBase = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat formatterDisplayf = new SimpleDateFormat("dd-MM-yyyy");
+        int diasVacaciones = 0;
+
+        String rangosFechas = null;
+
+        Date ultimo = null;
+        Date primero = null;
+        Date fechaEmision = null;
+        Date emision = jDateChooser5.getDate();
+        fechaEmision = (emision);
+
+        //fecha 1
+        Date d1 = jDateChooser1.getDate();
+        Date d2 = jDateChooser2.getDate();
+        if (Calculos.verificarQueHayaFecha(d1, d2) == true) {
+            diasVacaciones = Calculos.EntreFechas(d1, d2);
+            //jLabel11.setText("Días: " + Integer.toString(diasVacaciones));
+
+            f1 = formatterDisplay.format(d1);
+            f2 = formatterDisplay.format(d2);
+
+            rangosFechas = "Del: " + f1 + " al " + f2;
+            ultimo = d2;
+            primero = d1;
+            generar = true;
+        }
+        //JOptionPane.showMessageDialog(null, "Dias:"+ Integer.toString(dayDiff1)+" Dias fin de semana:"+Integer.toString(quitarFinSemana));
+//fecha 2    
+        Date d3 = null;
+        Date d4 = null;
+        if (jCheckBox1.isSelected() == true) {
+            generar = false;
+            d3 = jDateChooser3.getDate();
+            d4 = jDateChooser4.getDate();
+            if (Calculos.verificarQueHayaFecha(d2, d3) == true & Calculos.verificarQueHayaFecha(d3, d4) == true) {
+                int diasVacaciones2 = Calculos.EntreFechas(d3, d4);
+                //jLabel12.setText("Días: " + Integer.toString(diasVacaciones2));
+                diasVacaciones = diasVacaciones + diasVacaciones2;
+                f3 = formatterDisplay.format(d3);
+                f4 = formatterDisplay.format(d4);
+                rangosFechas = rangosFechas + ". Del " + f3 + " al " + f4;
+                ultimo = d4;
+                generar = true;
+//            x.actualizar();
+            }
+
+            //JOptionPane.showMessageDialog(null, "Dias:"+ Integer.toString(dayDiff2)+" Dias fin de semana:"+Integer.toString(quitarFinSemana2));
+        }
+        if (generar == true) {
+
+            Excel x = new Excel();
+            try {
+                ultimo = Calculos.regresaLaborar(ultimo);
+
+                String fechaRetorno = formatter.format(ultimo);
+                String fechaEmision2 = formatter.format(fechaEmision);
+
+                //codigo, Dias, rangoFechas, regresoLaborar, incioVacaciones, elaboradoPor, fechaEmision
+                x.generar(d1, d2, d3, d4, jTextField1.getText(), diasVacaciones, rangosFechas, ultimo, primero, elaboradoPor, fechaEmision, tipoColaborador, tipoDocumento, tipoCampus, firma);
+                //JOptionPane.showMessageDialog(null,asd+"asd");
+                //jTextField3.setText(asd);
+            } catch (Exception ex) {
+                Logger.getLogger(vacaciones.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }
+
+    private void procesar() {
+        firma = (String) jComboBox3.getSelectedItem();
+        tipoColaborador = jComboBox1.getSelectedIndex();
+        tipoCampus = jComboBox2.getSelectedIndex();
+        //JOptionPane.showMessageDialog(null, tipoCampus);
+        //factura = 1 -- planilla = 0
+        String f1 = null;
+        String f2 = null;
+        String f3 = null;
+        String f4 = null;
+        if (jCheckBox2.isSelected() == true) {
+            tipoDocumento = 1;//Borrador
+        } else {
+            tipoDocumento = 0;//DocumentoDirecto
+        }
+
+        boolean generar = false;
+        Format formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Format formatterDisplay = new SimpleDateFormat("dd-MM-yyyy");
+        DateFormat formatterBase = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat formatterDisplayf = new SimpleDateFormat("dd-MM-yyyy");
+        int diasVacaciones = 0;
+
+        String rangosFechas = null;
+
+        Date ultimo = null;
+        Date primero = null;
+        Date fechaEmision = null;
+        Date emision = jDateChooser5.getDate();
+        fechaEmision = (emision);
+
+        //fecha 1
+        Date d1 = jDateChooser1.getDate();
+        Date d2 = jDateChooser2.getDate();
+        if (Calculos.verificarQueHayaFecha(d1, d2) == true) {
+            diasVacaciones = Calculos.EntreFechas(d1, d2);
+            //jLabel11.setText("Días: " + Integer.toString(diasVacaciones));
+
+            f1 = formatterDisplay.format(d1);
+            f2 = formatterDisplay.format(d2);
+
+            rangosFechas = "Del: " + f1 + " al " + f2;
+            ultimo = d2;
+            primero = d1;
+            generar = true;
+        }
+        //JOptionPane.showMessageDialog(null, "Dias:"+ Integer.toString(dayDiff1)+" Dias fin de semana:"+Integer.toString(quitarFinSemana));
+//fecha 2    
+        Date d3 = null;
+        Date d4 = null;
+        if (jCheckBox1.isSelected() == true) {
+            generar = false;
+            d3 = jDateChooser3.getDate();
+            d4 = jDateChooser4.getDate();
+            if (Calculos.verificarQueHayaFecha(d2, d3) == true & Calculos.verificarQueHayaFecha(d3, d4) == true) {
+                int diasVacaciones2 = Calculos.EntreFechas(d3, d4);
+                //jLabel12.setText("Días: " + Integer.toString(diasVacaciones2));
+                diasVacaciones = diasVacaciones + diasVacaciones2;
+                f3 = formatterDisplayf.format(d3);
+                f4 = formatterDisplayf.format(d4);
+                rangosFechas = rangosFechas + ". Del " + f3 + " al " + f4;
+                ultimo = d4;
+                generar = true;
+//            x.actualizar();
+            }
+
+            //JOptionPane.showMessageDialog(null, "Dias:"+ Integer.toString(dayDiff2)+" Dias fin de semana:"+Integer.toString(quitarFinSemana2));
+        }
+        if (generar == true) {
+
+            Excel x = new Excel();
+            try {
+                ultimo = Calculos.regresaLaborar(ultimo);
+
+                String fechaRetorno = formatter.format(ultimo);
+                String fechaEmision2 = formatter.format(fechaEmision);
+
+                x.agregar(d1, d2, d3, d4, jTextField1.getText(), diasVacaciones, rangosFechas, ultimo, primero, elaboradoPor, fechaEmision, tipoColaborador, tipoDocumento, tipoCampus, firma);
+                x.generar(d1, d2, d3, d4, jTextField1.getText(), diasVacaciones, rangosFechas, ultimo, primero, elaboradoPor, fechaEmision, tipoColaborador, tipoDocumento, tipoCampus, firma);
+                actualizarTabla(jTextField1.getText());
+                buscarColaborador();
+            } catch (Exception ex) {
+                Logger.getLogger(vacaciones.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }
+
+    private void modificar() {
+        if (JOptionPane.showConfirmDialog(null, "¿Esta seguro de modificar al colaborador " + jLabel1.getText() + " " + jLabel2.getText() + " con el codigo de empleado " + jTextField1.getText() + "?", "WARNING", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            firma = (String) jComboBox3.getSelectedItem();
+            tipoColaborador = jComboBox1.getSelectedIndex();
+            tipoCampus = jComboBox2.getSelectedIndex();
+        //JOptionPane.showMessageDialog(null, tipoCampus);
+            //factura = 1 -- planilla = 0
+            String f1 = null;
+            String f2 = null;
+            String f3 = null;
+            String f4 = null;
+            if (jCheckBox2.isSelected() == true) {
+                tipoDocumento = 1;//Borrador
+            } else {
+                tipoDocumento = 0;//DocumentoDirecto
+            }
+
+            boolean generar = false;
+            Format formatter = new SimpleDateFormat("yyyy-MM-dd");
+            Format formatterDisplay = new SimpleDateFormat("dd-MM-yyyy");
+            DateFormat formatterBase = new SimpleDateFormat("yyyy-MM-dd");
+            DateFormat formatterDisplayf = new SimpleDateFormat("dd-MM-yyyy");
+            int diasVacaciones = 0;
+
+            String rangosFechas = null;
+
+            Date ultimo = null;
+            Date primero = null;
+            Date fechaEmision = null;
+            Date emision = jDateChooser5.getDate();
+            fechaEmision = (emision);
+
+            //fecha 1
+            Date d1 = jDateChooser1.getDate();
+            Date d2 = jDateChooser2.getDate();
+            if (Calculos.verificarQueHayaFecha(d1, d2) == true) {
+                diasVacaciones = Calculos.EntreFechas(d1, d2);
+                //jLabel11.setText("Días: " + Integer.toString(diasVacaciones));
+
+                f1 = formatterDisplay.format(d1);
+                f2 = formatterDisplay.format(d2);
+
+                rangosFechas = "Del: " + f1 + " al " + f2;
+                ultimo = d2;
+                primero = d1;
+                generar = true;
+            }
+            //JOptionPane.showMessageDialog(null, "Dias:"+ Integer.toString(dayDiff1)+" Dias fin de semana:"+Integer.toString(quitarFinSemana));
+//fecha 2    
+            Date d3 = null;
+            Date d4 = null;
+            if (jCheckBox1.isSelected() == true) {
+                generar = false;
+                d3 = jDateChooser3.getDate();
+                d4 = jDateChooser4.getDate();
+                if (Calculos.verificarQueHayaFecha(d2, d3) == true & Calculos.verificarQueHayaFecha(d3, d4) == true) {
+                    int diasVacaciones2 = Calculos.EntreFechas(d3, d4);
+                    //jLabel12.setText("Días: " + Integer.toString(diasVacaciones2));
+                    diasVacaciones = diasVacaciones + diasVacaciones2;
+                    f3 = formatterDisplayf.format(d3);
+                    f4 = formatterDisplayf.format(d4);
+                    rangosFechas = rangosFechas + ". Del " + f3 + " al " + f4;
+                    ultimo = d4;
+                    generar = true;
+//            x.actualizar();
+                }
+
+                //JOptionPane.showMessageDialog(null, "Dias:"+ Integer.toString(dayDiff2)+" Dias fin de semana:"+Integer.toString(quitarFinSemana2));
+            }
+            if (generar == true) {
+
+                Excel x = new Excel();
+                try {
+                    ultimo = Calculos.regresaLaborar(ultimo);
+
+                    String fechaRetorno = formatter.format(ultimo);
+                    String fechaEmision2 = formatter.format(fechaEmision);
+                //VacacionesMod  VMod = new VacacionesMod(Integer.parseInt(codigoMod),fechaEmisionMod,VacacionesAlMod,fechaEmision2,diasVacaciones,null,f1,f2,f3,f4,tipoCampus,tipoColaborador, tipoDocumento,elaboradoPor,null);
+                    //dao.ModificarAccion(VMod,Conexion.getConnection());
+                    x.modificar(Integer.parseInt(codigoMod), fechaEmisionMod, VacacionesAlMod, d1, d2, d3, d4, jTextField1.getText(), diasVacaciones, rangosFechas, ultimo, primero, elaboradoPor, fechaEmision, tipoColaborador, tipoDocumento, tipoCampus, firma);
+                    x.generar(d1, d2, d3, d4, jTextField1.getText(), diasVacaciones, rangosFechas, ultimo, primero, elaboradoPor, fechaEmision, tipoColaborador, tipoDocumento, tipoCampus, firma);
+
+                    actualizarTabla(jTextField1.getText());
+                    buscarColaborador();
+                    jButton5.setEnabled(false);
+                    this.jTable1.setModel(Model);
+                    Model.setRowCount(0);
+                    for (int i = 0; i < jTable1.getRowCount(); i++) {
+                        Model.removeRow(i);
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(vacaciones.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Cancelado", "Warning", JOptionPane.WARNING_MESSAGE);
+        }
+    }
+
     private void fillComboSign() {
-        String verificador = null;
         jComboBox3.removeAllItems();
         try {
             List<Colaboradores> colaboradores = col.listadoDeFirmantes(Conexion.getConnection());
@@ -135,11 +404,13 @@ public class vacaciones extends javax.swing.JFrame {
                         jTextField1.setEnabled(false);
                         try {
                             actualizarTabla(jTextField1.getText());
+                            codigoMod = jTextField1.getText();
                         } catch (Exception ex) {
                             Logger.getLogger(home.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     } else {
                         jTextField1.setText(null);
+                        codigoMod = jTextField1.getText();
                     }
 
                 } catch (Exception ex) {
@@ -166,6 +437,7 @@ public class vacaciones extends javax.swing.JFrame {
                 Format formato = new SimpleDateFormat("dd-MM-yyyy");
                 String s = formato.format(now);
                 jDateChooser5.setDate(now);
+                codigoMod = null;
             }
         }
     }
@@ -617,99 +889,13 @@ public class vacaciones extends javax.swing.JFrame {
     }
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         buscarColaborador();
-
-
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jDateChooser1AncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_jDateChooser1AncestorAdded
     }//GEN-LAST:event_jDateChooser1AncestorAdded
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        firma = (String) jComboBox3.getSelectedItem();
-        tipoColaborador = jComboBox1.getSelectedIndex();
-        tipoCampus = jComboBox2.getSelectedIndex();
-        //JOptionPane.showMessageDialog(null, tipoCampus);
-        //factura = 1 -- planilla = 0
-        String f1 = null;
-        String f2 = null;
-        String f3 = null;
-        String f4 = null;
-        if (jCheckBox2.isSelected() == true) {
-            tipoDocumento = 1;//Borrador
-        } else {
-            tipoDocumento = 0;//DocumentoDirecto
-        }
-
-        boolean generar = false;
-        Format formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Format formatterDisplay = new SimpleDateFormat("dd-MM-yyyy");
-        DateFormat formatterBase = new SimpleDateFormat("yyyy-MM-dd");
-        DateFormat formatterDisplayf = new SimpleDateFormat("dd-MM-yyyy");
-        int diasVacaciones = 0;
-
-        String rangosFechas = null;
-
-        Date ultimo = null;
-        Date primero = null;
-        Date fechaEmision = null;
-        Date emision = jDateChooser5.getDate();
-        fechaEmision = (emision);
-
-        //fecha 1
-        Date d1 = jDateChooser1.getDate();
-        Date d2 = jDateChooser2.getDate();
-        if (Calculos.verificarQueHayaFecha(d1, d2) == true) {
-            diasVacaciones = Calculos.EntreFechas(d1, d2);
-            //jLabel11.setText("Días: " + Integer.toString(diasVacaciones));
-
-            f1 = formatterDisplay.format(d1);
-            f2 = formatterDisplay.format(d2);
-
-            rangosFechas = "Del: " + f1 + " al " + f2;
-            ultimo = d2;
-            primero = d1;
-            generar = true;
-        }
-        //JOptionPane.showMessageDialog(null, "Dias:"+ Integer.toString(dayDiff1)+" Dias fin de semana:"+Integer.toString(quitarFinSemana));
-//fecha 2    
-        Date d3 = null;
-        Date d4 = null;
-        if (jCheckBox1.isSelected() == true) {
-            generar = false;
-            d3 = jDateChooser3.getDate();
-            d4 = jDateChooser4.getDate();
-            if (Calculos.verificarQueHayaFecha(d2, d3) == true & Calculos.verificarQueHayaFecha(d3, d4) == true) {
-                int diasVacaciones2 = Calculos.EntreFechas(d3, d4);
-                //jLabel12.setText("Días: " + Integer.toString(diasVacaciones2));
-                diasVacaciones = diasVacaciones + diasVacaciones2;
-                f3 = formatterDisplayf.format(d3);
-                f4 = formatterDisplayf.format(d4);
-                rangosFechas = rangosFechas + ". Del " + f3 + " al " + f4;
-                ultimo = d4;
-                generar = true;
-//            x.actualizar();
-            }
-
-            //JOptionPane.showMessageDialog(null, "Dias:"+ Integer.toString(dayDiff2)+" Dias fin de semana:"+Integer.toString(quitarFinSemana2));
-        }
-        if (generar == true) {
-
-            Excel x = new Excel();
-            try {
-                ultimo = Calculos.regresaLaborar(ultimo);
-
-                String fechaRetorno = formatter.format(ultimo);
-                String fechaEmision2 = formatter.format(fechaEmision);
-
-                x.actualizar(d1, d2, d3, d4, jTextField1.getText(), diasVacaciones, rangosFechas, ultimo, primero, elaboradoPor, fechaEmision, tipoColaborador, tipoDocumento, tipoCampus, firma);
-                x.generar(d1, d2, d3, d4, jTextField1.getText(), diasVacaciones, rangosFechas, ultimo, primero, elaboradoPor, fechaEmision, tipoColaborador, tipoDocumento, tipoCampus, firma);
-                actualizarTabla(jTextField1.getText());
-                buscarColaborador();
-            } catch (Exception ex) {
-                Logger.getLogger(vacaciones.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-        }
+        procesar();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jDateChooser1HierarchyChanged(java.awt.event.HierarchyEvent evt) {//GEN-FIRST:event_jDateChooser1HierarchyChanged
@@ -784,91 +970,7 @@ public class vacaciones extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1KeyReleased
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        firma = (String) jComboBox3.getSelectedItem();
-        tipoColaborador = jComboBox1.getSelectedIndex();
-        tipoCampus = jComboBox2.getSelectedIndex();
-        //JOptionPane.showMessageDialog(null, tipoCampus);
-        //factura = 1 -- planilla = 0
-        String f1 = null;
-        String f2 = null;
-        String f3 = null;
-        String f4 = null;
-        if (jCheckBox2.isSelected() == true) {
-            tipoDocumento = 1;//Borrador
-        } else {
-            tipoDocumento = 0;//DocumentoDirecto
-        }
-
-        boolean generar = false;
-        Format formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Format formatterDisplay = new SimpleDateFormat("dd-MM-yyyy");
-        DateFormat formatterBase = new SimpleDateFormat("yyyy-MM-dd");
-        DateFormat formatterDisplayf = new SimpleDateFormat("dd-MM-yyyy");
-        int diasVacaciones = 0;
-
-        String rangosFechas = null;
-
-        Date ultimo = null;
-        Date primero = null;
-        Date fechaEmision = null;
-        Date emision = jDateChooser5.getDate();
-        fechaEmision = (emision);
-
-        //fecha 1
-        Date d1 = jDateChooser1.getDate();
-        Date d2 = jDateChooser2.getDate();
-        if (Calculos.verificarQueHayaFecha(d1, d2) == true) {
-            diasVacaciones = Calculos.EntreFechas(d1, d2);
-            //jLabel11.setText("Días: " + Integer.toString(diasVacaciones));
-
-            f1 = formatterDisplay.format(d1);
-            f2 = formatterDisplay.format(d2);
-
-            rangosFechas = "Del: " + f1 + " al " + f2;
-            ultimo = d2;
-            primero = d1;
-            generar = true;
-        }
-        //JOptionPane.showMessageDialog(null, "Dias:"+ Integer.toString(dayDiff1)+" Dias fin de semana:"+Integer.toString(quitarFinSemana));
-//fecha 2    
-        Date d3 = null;
-        Date d4 = null;
-        if (jCheckBox1.isSelected() == true) {
-            generar = false;
-            d3 = jDateChooser3.getDate();
-            d4 = jDateChooser4.getDate();
-            if (Calculos.verificarQueHayaFecha(d2, d3) == true & Calculos.verificarQueHayaFecha(d3, d4) == true) {
-                int diasVacaciones2 = Calculos.EntreFechas(d3, d4);
-                //jLabel12.setText("Días: " + Integer.toString(diasVacaciones2));
-                diasVacaciones = diasVacaciones + diasVacaciones2;
-                f3 = formatterDisplay.format(d3);
-                f4 = formatterDisplay.format(d4);
-                rangosFechas = rangosFechas + ". Del " + f3 + " al " + f4;
-                ultimo = d4;
-                generar = true;
-//            x.actualizar();
-            }
-
-            //JOptionPane.showMessageDialog(null, "Dias:"+ Integer.toString(dayDiff2)+" Dias fin de semana:"+Integer.toString(quitarFinSemana2));
-        }
-        if (generar == true) {
-
-            Excel x = new Excel();
-            try {
-                ultimo = Calculos.regresaLaborar(ultimo);
-
-                String fechaRetorno = formatter.format(ultimo);
-                String fechaEmision2 = formatter.format(fechaEmision);
-
-                //codigo, Dias, rangoFechas, regresoLaborar, incioVacaciones, elaboradoPor, fechaEmision
-                x.generar(d1, d2, d3, d4, jTextField1.getText(), diasVacaciones, rangosFechas, ultimo, primero, elaboradoPor, fechaEmision, tipoColaborador, tipoDocumento, tipoCampus, firma);
-                //JOptionPane.showMessageDialog(null,asd+"asd");
-                //jTextField3.setText(asd);
-            } catch (Exception ex) {
-                Logger.getLogger(vacaciones.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-        }        // TODO add your handling code here:
+        generar();
     }//GEN-LAST:event_jButton4ActionPerformed
 
 
@@ -877,7 +979,7 @@ public class vacaciones extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Para ejecutar esta opción debe selecciónar a un colaborador", "ADVERTENCIA", 2);
 
         } else {
-            jButton5.setEnabled(true);                                                  
+            jButton5.setEnabled(true);
             Object sele0 = jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 0);
             Object sele1 = jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 1);
             Object sele2 = jTable1.getModel().getValueAt(jTable1.getSelectedRow(), 2);
@@ -895,6 +997,7 @@ public class vacaciones extends javax.swing.JFrame {
                 //System.out.println(emision);
                 String emision1 = display.format(emision);
                 jDateChooser5.setDate(emision);
+                fechaEmisionMod = emision;
 
                 Date DEL = new SimpleDateFormat("yyyy-MM-dd").parse(paso1);
                 //System.out.println(DEL);
@@ -905,6 +1008,7 @@ public class vacaciones extends javax.swing.JFrame {
                 //System.out.println(AL);
                 jDateChooser2.setDate(null);
                 jDateChooser2.setDate(AL);
+                VacacionesAlMod = AL;
 
                 if (sele3 == null) {
                     jDateChooser3.setDate(null);
@@ -1004,7 +1108,8 @@ public class vacaciones extends javax.swing.JFrame {
     }//GEN-LAST:event_jCheckBox1MouseClicked
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        jButton5.setEnabled(false);
+        modificar();
+
     }//GEN-LAST:event_jButton5ActionPerformed
 
     /**

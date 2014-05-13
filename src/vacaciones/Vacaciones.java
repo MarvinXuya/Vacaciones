@@ -151,7 +151,7 @@ public class Vacaciones {
         this.tipoCampus = tipoCampus;
 
     }
-
+      
     public String getFechaEmision() {
         return fechaEmision;
     }

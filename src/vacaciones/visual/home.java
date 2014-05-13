@@ -846,7 +846,7 @@ public class home extends javax.swing.JFrame {
                     }
 
                 } else {
-                    JOptionPane.showMessageDialog(null, "Cancelado");
+                    JOptionPane.showMessageDialog(null, "Cancelado", "Warning",JOptionPane.WARNING_MESSAGE);
                 }
             }
         }

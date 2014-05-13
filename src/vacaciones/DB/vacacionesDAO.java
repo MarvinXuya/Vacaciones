@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import vacaciones.Vacaciones;
+import vacaciones.VacacionesMod;
 
 /**
  *
@@ -19,8 +20,8 @@ import vacaciones.Vacaciones;
 public class vacacionesDAO {
 
     private String INSERT_ACTION = "EXEC agregarAccionPersonal ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?;";
-    private String LOAD_SOME = "select * from accionPersonalPlanilla where CodigoEmpleado = ?;";// and fechaEmision = ? and vacacionesAl = ?;";
-    private String UPDATE = "update accionPersonalPlanilla where CodigoEmpleado = ? and fechaEmision = ? and fechaEfectivo = ? and vacacionesAl = ?;";
+    private String LOAD_SOME = "EXEC ListarAccionPorColaborador ?;"; 
+    private String UPDATE = "EXEC ModifAccionPersonal ?,?,?, ?,?,?,?,?,?,?,?,?,?,?,?;";
     private String fechaEmision;
     private String fechaEfectivo;
     private String emitidoPor;
@@ -69,14 +70,8 @@ public class vacacionesDAO {
 
     public void AgregarColaboradores(Vacaciones vacacion, Connection connection) throws Exception {
         try (PreparedStatement ps = connection.prepareStatement(INSERT_ACTION)) {
-
-
-
             ps.setString(1, vacacion.getFechaEmision());
-
             ps.setString(2, vacacion.getFechaEfectivo());
-
-
             ps.setString(3, vacacion.getEmitidoPor());
             ps.setInt(4, vacacion.getCodigoEmpleado());
             ps.setString(5, vacacion.getGradoEscolar());
@@ -106,39 +101,21 @@ public class vacacionesDAO {
             ps.setString(29, vacacion.getTipoContratacion());
             ps.setString(30, vacacion.getValorCurso());
             ps.setString(31, vacacion.getValorCursoTotal());
-            
-            
             ps.setString(32, vacacion.getVacacionesDel());
-            
-
             ps.setString(33, vacacion.getVacacionesAl());
-            
             String noString = null;
             if (vacacion.getVacacionesDel2() == null) {
                 ps.setString(34, noString);
             } else {
-
                 ps.setString(34, vacacion.getVacacionesDel2());
             }
-
             if (vacacion.getVacacionesAl2() == null) {
                 ps.setString(35, noString);
             } else {
-
                 ps.setString(35, vacacion.getVacacionesAl2());
             }
-
-
-
-
-            ps.setInt(36, vacacion.getDíasVacaciones());
-            
-            
-
-            
-            ps.setString(37, vacacion.getRegresaLaborar());
-            
-            
+            ps.setInt(36, vacacion.getDíasVacaciones());            
+            ps.setString(37, vacacion.getRegresaLaborar());            
             ps.setInt(38, vacacion.getRetiro());
             ps.setString(39, vacacion.getObservaciones());
             ps.setString(40, vacacion.getProyectoEncargado());
@@ -218,4 +195,40 @@ public class vacacionesDAO {
         }
         return vacaciones;
     }
+
+    public void ModificarAccion(VacacionesMod vacacion, Connection connection) throws Exception {
+        try (PreparedStatement ps = connection.prepareStatement(UPDATE)) {
+            
+            ps.setInt(1, vacacion.getCodigoEmpleadoMod());
+            ps.setString(2, vacacion.getFechaEmisionMod());
+            ps.setString(3, vacacion.getVacacionesAlMod());
+            
+            ps.setString(4, vacacion.getFechaEmision());
+            ps.setInt(5, vacacion.getDíasVacaciones());
+            ps.setString(6, vacacion.getObservaciones());
+            ps.setString(7, vacacion.getVacacionesDel());
+            ps.setString(8, vacacion.getVacacionesAl());
+            String noString = null;
+            if (vacacion.getVacacionesDel2() == null) {
+                ps.setString(9, noString);
+            } else {
+                ps.setString(9, vacacion.getVacacionesDel2());
+            }
+            if (vacacion.getVacacionesAl2() == null) {
+                ps.setString(10, noString);
+            } else {
+                ps.setString(10, vacacion.getVacacionesAl2());
+            }
+            ps.setInt(11, vacacion.getTipoCampus());
+            ps.setInt(12, vacacion.getTipoColaborador());
+            ps.setInt(13, vacacion.getTipoDocumento());            
+            ps.setString(14, vacacion.getEmitidoPor());                      
+            ps.setString(15, vacacion.getRegresaLaborar());            
+
+            ps.execute();
+        }
+        connection.close();
+    }
+    
+    
 }
