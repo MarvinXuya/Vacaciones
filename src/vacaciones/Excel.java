@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
 import java.text.DateFormat;
@@ -14,7 +15,12 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.TimeZone;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.TableModel;
+import org.apache.poi.hssf.record.formula.functions.Cell;
+import org.apache.poi.hssf.record.formula.functions.Row;
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;// .HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import vacaciones.DB.colaboradoresDAO;
@@ -70,7 +76,7 @@ public class Excel {
 
     }
 
-public String modificar(int codMod, Date fechaEmisionMod, Date VacacionesAlMod,Date f1, Date f2, Date f3, Date f4, String codigo, int Dias, String rangoFechas, Date regresoLaborar, Date incioVacaciones, String elaboradoPor, Date fechaEmision, int tipoColaborador, int tipoDocumento, int tipoCampus, String firma) throws Exception {
+    public String modificar(int codMod, Date fechaEmisionMod, Date VacacionesAlMod, Date f1, Date f2, Date f3, Date f4, String codigo, int Dias, String rangoFechas, Date regresoLaborar, Date incioVacaciones, String elaboradoPor, Date fechaEmision, int tipoColaborador, int tipoDocumento, int tipoCampus, String firma) throws Exception {
 
         if (verificarexcel() == true) {
 
@@ -116,12 +122,12 @@ public String modificar(int codMod, Date fechaEmisionMod, Date VacacionesAlMod,D
             int emisionMes = fInicio.get(GregorianCalendar.MONTH) + 1;
             int emisionAnio = fInicio.get(GregorianCalendar.YEAR);
 
-            VacacionesMod accion = new VacacionesMod(codMod,ifechaEmisionMod,iVacacionesAlMod,fEmision,Dias,"Estaré tomando " + Integer.toString(Dias) + " día(s) de vacaciones 2014",if1,if2,if3,if4,tipoCampus,tipoColaborador, tipoDocumento,elaboradoPor,rLaboralBase);
+            VacacionesMod accion = new VacacionesMod(codMod, ifechaEmisionMod, iVacacionesAlMod, fEmision, Dias, "Estaré tomando " + Integer.toString(Dias) + " día(s) de vacaciones 2014", if1, if2, if3, if4, tipoCampus, tipoColaborador, tipoDocumento, elaboradoPor, rLaboralBase);
             v.ModificarAccion(accion, Conexion.getConnection());
         }//Fin de excel
         return null;
     }
-    
+
     public String agregar(Date f1, Date f2, Date f3, Date f4, String codigo, int Dias, String rangoFechas, Date regresoLaborar, Date incioVacaciones, String elaboradoPor, Date fechaEmision, int tipoColaborador, int tipoDocumento, int tipoCampus, String firma) throws Exception {
 
         if (verificarexcel() == true) {
@@ -381,10 +387,10 @@ public String modificar(int codMod, Date fechaEmisionMod, Date VacacionesAlMod,D
                             cell = sheet.getRow(35).getCell(2);
                             cell.setCellValue(Dias);
 
-                            if (rangoFechas.contains(".")) {                                
-                                String part1 = rangoFechas.substring(0,rangoFechas.indexOf('.'));
+                            if (rangoFechas.contains(".")) {
+                                String part1 = rangoFechas.substring(0, rangoFechas.indexOf('.'));
                                 //System.out.println(part1);
-                                String part2 = rangoFechas.substring((rangoFechas.indexOf('.')+2),rangoFechas.length());
+                                String part2 = rangoFechas.substring((rangoFechas.indexOf('.') + 2), rangoFechas.length());
                                 //System.out.println(part2);
                                 cell = sheet.getRow(36).getCell(2);
                                 cell.setCellValue(part1);
@@ -420,5 +426,93 @@ public String modificar(int codMod, Date fechaEmisionMod, Date VacacionesAlMod,D
         }//final de for
 
         return null;
+    }
+    //public void exportTable(JTable table, File file) throws IOException {
+
+    /*funciona
+     public void exportTable(JTable table) throws IOException {
+     File file = new File(System.getProperty("user.dir") + "\\excel.xls");
+     TableModel model = table.getModel();
+     FileWriter out = new FileWriter(file);
+     String groupExport = "";
+     for (int i = 0; i < (model.getColumnCount()); i++) {//* disable export from TableHeaders
+     groupExport = String.valueOf(model.getColumnName(i));
+     out.write(String.valueOf(groupExport) + "\t");
+     }
+     out.write("\n");
+     for (int i = 0; i < model.getRowCount(); i++) {
+     for (int j = 0; j < (model.getColumnCount()); j++) {
+     if (model.getValueAt(i, j) == null) {
+     out.write("null" + "\t");
+     } else {
+     groupExport = String.valueOf(model.getValueAt(i, j));
+     out.write(String.valueOf(groupExport) + "\t");
+     }
+     }
+     out.write("\n");
+     }
+     out.close();
+     }
+     fin funciona*/
+    public void exportTable(JTable table) throws IOException {
+        FileInputStream file = new FileInputStream(new File(System.getProperty("user.dir") + "\\LB.xls"));
+        TableModel model = table.getModel();
+        HSSFWorkbook workbook;
+        workbook = new HSSFWorkbook(file);
+        HSSFSheet sheet = workbook.getSheetAt(0);
+        HSSFCell cell = null;
+        HSSFRow row = null;
+        String groupExport = "";
+
+
+        for (int i = 0; i < model.getRowCount(); i++) {
+            row = sheet.createRow(i + 1);
+            for (int j = 0; j < (model.getColumnCount()); j++) {
+                if (model.getValueAt(i, j) == null) {
+                } else {
+                    groupExport = String.valueOf(model.getValueAt(i, j));
+                    System.out.println(i);
+                    System.out.println(j);
+                    System.out.println(String.valueOf(groupExport));
+                    cell = row.createCell(j);
+                    cell.setCellValue(String.valueOf(groupExport));
+                }
+            }
+        }
+        try (FileOutputStream outFile = new FileOutputStream(new File(System.getProperty("user.dir") + "\\Listado.xls"))) {
+            workbook.write(outFile);
+        }
+    }
+
+    public void exportTableIndividual(JTable table, String NombreApellido) throws IOException {
+        FileInputStream file = new FileInputStream(new File(System.getProperty("user.dir") + "\\LBI.xls"));
+        TableModel model = table.getModel();
+        HSSFWorkbook workbook;
+        workbook = new HSSFWorkbook(file);
+        HSSFSheet sheet = workbook.getSheetAt(0);
+        HSSFCell cell = null;
+        HSSFRow row = null;
+        String groupExport = "";
+        row = sheet.createRow(0);
+        cell = row.createCell(0);
+        cell.setCellValue(NombreApellido);
+
+        for (int i = 0; i < model.getRowCount(); i++) {
+            row = sheet.createRow(i + 1);
+            for (int j = 0; j < (model.getColumnCount()); j++) {
+                if (model.getValueAt(i, j) == null) {
+                } else {
+                    groupExport = String.valueOf(model.getValueAt(i, j));
+                    System.out.println(i);
+                    System.out.println(j);
+                    System.out.println(String.valueOf(groupExport));
+                    cell = row.createCell(j);
+                    cell.setCellValue(String.valueOf(groupExport));
+                }
+            }
+        }
+        try (FileOutputStream outFile = new FileOutputStream(new File(System.getProperty("user.dir") + "\\Listado Individual.xls"))) {
+            workbook.write(outFile);
+        }
     }
 }

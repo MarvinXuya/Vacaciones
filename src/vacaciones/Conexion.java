@@ -27,8 +27,8 @@ public class Conexion {
     public Statement s;
     private static String driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver";
     
-    private static String url = "jdbc:sqlserver://FSX-GT3;databaseName=Colaboradores;integratedSecurity=true";
-    //private static String url = "jdbc:sqlserver://SHADOW\\SQLEXPRESS;databaseName=Colaboradores;integratedSecurity=true";
+    //private static String url = "jdbc:sqlserver://FSX-GT3;databaseName=Colaboradores;integratedSecurity=true";
+    private static String url = "jdbc:sqlserver://SHADOW\\SQLEXPRESS;databaseName=Colaboradores;integratedSecurity=true";
     private static String user = "";
     private static String password = "";
     private static Connection Conectar = null;

@@ -36,6 +36,7 @@ import vacaciones.Excel;
 import vacaciones.Vacaciones;
 import vacaciones.VacacionesMod;
 import javax.swing.AbstractListModel;
+import javax.swing.JTable;
 
 /**
  *
@@ -53,7 +54,9 @@ public class vacaciones extends javax.swing.JFrame {
     private Integer tipoDocumento = null;
     private Integer tipoCampus = null;
     private String firma = null;
+    private String NombreApellido = null;
     vacacionesDAO dao = new vacacionesDAO();
+    JTable tabla;
 
     private void generar() {
         firma = (String) jComboBox3.getSelectedItem();
@@ -236,7 +239,7 @@ public class vacaciones extends javax.swing.JFrame {
             firma = (String) jComboBox3.getSelectedItem();
             tipoColaborador = jComboBox1.getSelectedIndex();
             tipoCampus = jComboBox2.getSelectedIndex();
-        //JOptionPane.showMessageDialog(null, tipoCampus);
+            //JOptionPane.showMessageDialog(null, tipoCampus);
             //factura = 1 -- planilla = 0
             String f1 = null;
             String f2 = null;
@@ -308,7 +311,7 @@ public class vacaciones extends javax.swing.JFrame {
 
                     String fechaRetorno = formatter.format(ultimo);
                     String fechaEmision2 = formatter.format(fechaEmision);
-                //VacacionesMod  VMod = new VacacionesMod(Integer.parseInt(codigoMod),fechaEmisionMod,VacacionesAlMod,fechaEmision2,diasVacaciones,null,f1,f2,f3,f4,tipoCampus,tipoColaborador, tipoDocumento,elaboradoPor,null);
+                    //VacacionesMod  VMod = new VacacionesMod(Integer.parseInt(codigoMod),fechaEmisionMod,VacacionesAlMod,fechaEmision2,diasVacaciones,null,f1,f2,f3,f4,tipoCampus,tipoColaborador, tipoDocumento,elaboradoPor,null);
                     //dao.ModificarAccion(VMod,Conexion.getConnection());
                     x.modificar(Integer.parseInt(codigoMod), fechaEmisionMod, VacacionesAlMod, d1, d2, d3, d4, jTextField1.getText(), diasVacaciones, rangosFechas, ultimo, primero, elaboradoPor, fechaEmision, tipoColaborador, tipoDocumento, tipoCampus, firma);
                     x.generar(d1, d2, d3, d4, jTextField1.getText(), diasVacaciones, rangosFechas, ultimo, primero, elaboradoPor, fechaEmision, tipoColaborador, tipoDocumento, tipoCampus, firma);
@@ -378,6 +381,7 @@ public class vacaciones extends javax.swing.JFrame {
         jTable1.getColumnModel().getColumn(3).setPreferredWidth(120);
         jTable1.getColumnModel().getColumn(4).setPreferredWidth(120);
         jTable1.getColumnModel().getColumn(5).setPreferredWidth(50);
+        tabla = jTable1;
     }
 
     private void buscarColaborador() {
@@ -393,6 +397,7 @@ public class vacaciones extends javax.swing.JFrame {
                         jLabel2.setText(c.getApellido());
                         jLabel12.setText(c.getDisponible());
                         verificador = c.getNombre();
+                        NombreApellido = (c.getNombre()) + (c.getApellido());
                         //colaboradoresDAO col = new colaboradoresDAO();
                         // -----> se agregan 20 dias por año actual <------//
                         col.BuscarColaboradoresAgregarVacaciones(codigoBuscar, Conexion.getConnection());
@@ -411,6 +416,7 @@ public class vacaciones extends javax.swing.JFrame {
                     } else {
                         jTextField1.setText(null);
                         codigoMod = jTextField1.getText();
+                        NombreApellido = null;
                     }
 
                 } catch (Exception ex) {
@@ -503,6 +509,8 @@ public class vacaciones extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jButton8 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         jComboBox1 = new javax.swing.JComboBox();
         jLabel15 = new javax.swing.JLabel();
         jCheckBox2 = new javax.swing.JCheckBox();
@@ -661,21 +669,50 @@ public class vacaciones extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
+        jButton8.setText("Importar");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("Exportar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 539, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jButton3)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 539, Short.MAX_VALUE))
                 .addContainerGap())
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGap(249, 249, 249)
+                    .addComponent(jButton8)
+                    .addContainerGap(250, Short.MAX_VALUE)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 417, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton3)
+                .addContainerGap())
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGap(209, 209, 209)
+                    .addComponent(jButton8)
+                    .addContainerGap(225, Short.MAX_VALUE)))
         );
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Planilla", "Factura" }));
@@ -826,8 +863,8 @@ public class vacaciones extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -867,13 +904,13 @@ public class vacaciones extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel19)
                             .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(10, 10, 10)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton1)
                             .addComponent(jButton4)
                             .addComponent(jButton5)
                             .addComponent(jCheckBox2))))
-                .addGap(0, 9, Short.MAX_VALUE))
+                .addGap(0, 12, Short.MAX_VALUE))
         );
 
         pack();
@@ -972,7 +1009,6 @@ public class vacaciones extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         generar();
     }//GEN-LAST:event_jButton4ActionPerformed
-
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         if (!(jTable1.getSelectedRowCount() > 0)) {
@@ -1104,13 +1140,25 @@ public class vacaciones extends javax.swing.JFrame {
     }//GEN-LAST:event_jCheckBox1MouseReleased
 
     private void jCheckBox1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jCheckBox1MouseClicked
-
     }//GEN-LAST:event_jCheckBox1MouseClicked
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         modificar();
 
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        Excel ex = new Excel();
+        try {
+            ex.exportTableIndividual(tabla, NombreApellido);
+        } catch (IOException ex1) {
+            Logger.getLogger(home.class.getName()).log(Level.SEVERE, null, ex1);
+        }
+        jButton8.setEnabled(false);
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1150,8 +1198,10 @@ public class vacaciones extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton8;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JComboBox jComboBox1;

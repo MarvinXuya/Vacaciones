@@ -17,14 +17,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import vacaciones.DB.colaboradoresDAO;
 import vacaciones.DB.colaboradoresDisponiblesDAO;
 import vacaciones.Colaboradores;
 import vacaciones.ColaboradoresDisponibles;
 import vacaciones.Calculos;
-
+import vacaciones.Excel;
 /**
  *
  * @author mx
@@ -51,6 +53,7 @@ public class home extends javax.swing.JFrame {
     String imagePath = "sol.png";
     colaboradoresDAO dao = new colaboradoresDAO();
     colaboradoresDisponiblesDAO daoCD = new colaboradoresDisponiblesDAO();
+    JTable tabla;
 
     public void Limpiar() {
         textField1.setText("");
@@ -135,7 +138,7 @@ public class home extends javax.swing.JFrame {
     }
 
     public void actualizarTabla() throws Exception {
-
+        //TableModel Model = null;
         this.jTable1.setModel(Model);
         Model.setRowCount(0);
         for (int i = 0; i < jTable1.getRowCount(); i++) {
@@ -151,6 +154,8 @@ public class home extends javax.swing.JFrame {
         jTable1.getColumnModel().getColumn(2).setPreferredWidth(140);
         jTable1.getColumnModel().getColumn(3).setPreferredWidth(160);
         jTable1.getColumnModel().getColumn(4).setPreferredWidth(50);
+        tabla = jTable1;
+        
     }
 
     public void busquedaActualizaTabla() throws Exception {
@@ -171,6 +176,7 @@ public class home extends javax.swing.JFrame {
         jTable1.getColumnModel().getColumn(2).setPreferredWidth(140);
         jTable1.getColumnModel().getColumn(3).setPreferredWidth(160);
         jTable1.getColumnModel().getColumn(4).setPreferredWidth(50);
+        tabla = jTable1;
     }
 
     public void VerificarAgregarColaboradores() {
@@ -254,6 +260,7 @@ public class home extends javax.swing.JFrame {
         Limpiar();
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
+        jButton8.setEnabled(false);
         //this.setIconImage(Toolkit.getDefaultToolkit().getImage("sol.png")); 
 
     }
@@ -317,6 +324,7 @@ public class home extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -635,6 +643,13 @@ public class home extends javax.swing.JFrame {
             }
         });
 
+        jButton8.setText("Exportar");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -646,6 +661,8 @@ public class home extends javax.swing.JFrame {
                         .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton3)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton8)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE))
                 .addContainerGap())
@@ -656,7 +673,8 @@ public class home extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(jButton3)
+                    .addComponent(jButton8))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1))
         );
@@ -744,7 +762,7 @@ public class home extends javax.swing.JFrame {
         } catch (Exception ex) {
             Logger.getLogger(home.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+jButton8.setEnabled(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -753,7 +771,7 @@ public class home extends javax.swing.JFrame {
         } catch (Exception ex) {
             Logger.getLogger(home.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+jButton8.setEnabled(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
@@ -928,6 +946,16 @@ public class home extends javax.swing.JFrame {
         jButton5.setEnabled(false);        // TODO add your handling code here:
     }//GEN-LAST:event_jButton7ActionPerformed
 
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+            Excel ex = new Excel();
+        try {
+            ex.exportTable(tabla);
+        } catch (IOException ex1) {
+            Logger.getLogger(home.class.getName()).log(Level.SEVERE, null, ex1);
+        }
+        jButton8.setEnabled(false);
+    }//GEN-LAST:event_jButton8ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -970,6 +998,7 @@ public class home extends javax.swing.JFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     private javax.swing.JCheckBox jCheckBox1;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private com.toedter.calendar.JDateChooser jDateChooser2;
