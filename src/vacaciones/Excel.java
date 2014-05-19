@@ -498,7 +498,7 @@ public class Excel {
         cell.setCellValue(NombreApellido);
 
         for (int i = 0; i < model.getRowCount(); i++) {
-            row = sheet.createRow(i + 1);
+            row = sheet.createRow(i + 3);
             for (int j = 0; j < (model.getColumnCount()); j++) {
                 if (model.getValueAt(i, j) == null) {
                 } else {
