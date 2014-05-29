@@ -127,6 +127,59 @@ public class Excel {
         }//Fin de excel
         return null;
     }
+    
+    public String eliminar(int codMod, Date fechaEmisionMod, Date VacacionesAlMod, Date f1, Date f2, Date f3, Date f4, String codigo, int Dias, String rangoFechas, Date regresoLaborar, Date incioVacaciones, String elaboradoPor, Date fechaEmision, int tipoColaborador, int tipoDocumento, int tipoCampus, String firma) throws Exception {
+
+        if (verificarexcel() == true) {
+
+            GregorianCalendar fInicio = new GregorianCalendar();
+            DateFormat base = new SimpleDateFormat("yyyy-MM-dd");
+            DateFormat display = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            //DateFormat df = new SimpleDateFormat("yyyy-MM-dd");           
+
+            String rLaboral = display.format(regresoLaborar);
+            String rLaboralBase = base.format(regresoLaborar);
+            String fEmision = base.format(fechaEmision);
+
+            String iVacaciones = base.format(incioVacaciones);
+            String if1 = base.format(f1);
+            String if2 = base.format(f2);
+            String if3 = null;
+            String if4 = null;
+            String ifechaEmisionMod = base.format(fechaEmisionMod);
+            String iVacacionesAlMod = base.format(VacacionesAlMod);
+
+            String paso = null;
+            float pasoFloat = 0;
+            int pasoInt = 0;
+            if (f3 == null) {
+                f3 = null;
+            } else {
+                if3 = base.format(f3);
+            }
+            if (f4 == null) {
+                f4 = null;
+            } else {
+                if4 = base.format(f4);
+            }
+
+            fInicio.setTime(incioVacaciones);
+            int inicioDia = fInicio.get(GregorianCalendar.DAY_OF_MONTH);
+            int inicioMes = fInicio.get(GregorianCalendar.MONTH) + 1;
+            int inicioAnio = fInicio.get(GregorianCalendar.YEAR);
+
+            fInicio.setTime(fechaEmision);
+            int emisionDia = fInicio.get(GregorianCalendar.DAY_OF_MONTH);
+            int emisionMes = fInicio.get(GregorianCalendar.MONTH) + 1;
+            int emisionAnio = fInicio.get(GregorianCalendar.YEAR);
+
+            VacacionesMod accion = new VacacionesMod(codMod, ifechaEmisionMod, iVacacionesAlMod, fEmision, Dias, "Estaré tomando " + Integer.toString(Dias) + " día(s) de vacaciones 2014", if1, if2, if3, if4, tipoCampus, tipoColaborador, tipoDocumento, elaboradoPor, rLaboralBase);
+            v.EliminarAccion(accion, Conexion.getConnection());
+        }//Fin de excel
+        return null;
+    }
+    
 
     public String agregar(Date f1, Date f2, Date f3, Date f4, String codigo, int Dias, String rangoFechas, Date regresoLaborar, Date incioVacaciones, String elaboradoPor, Date fechaEmision, int tipoColaborador, int tipoDocumento, int tipoCampus, String firma) throws Exception {
 

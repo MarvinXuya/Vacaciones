@@ -58,9 +58,24 @@ public class Calculos {
         GregorianCalendar gcal1 = new GregorianCalendar();
         gcal1.setTime(inicio);
         int quitarFinSemana = 0;
-        while (gcal1.getTime().before(ultimo)) {
+        
+        
+        //Se agrego esta porción de código porque se contaba sabado como un día de trabajo
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar c = Calendar.getInstance();
+        c.setTime(ultimo);
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        c.add(Calendar.DATE, 1);  // number of days to add
+
+        while (gcal1.getTime().before(c.getTime())) {
             // Sabado = 6; Domingo = 0
-            if (gcal1.getTime().getDay() == 6 || gcal1.getTime().getDay() == 0) {
+            //JOptionPane.showMessageDialog(null, c.getTime());
+            //JOptionPane.showMessageDialog(null, gcal1.getTime().getDay());
+            //JOptionPane.showMessageDialog(null,gcal1.getTime().before(c.getTime()));
+            if (gcal1.getTime().getDay() == 6 | gcal1.getTime().getDay() == 0) {
                 quitarFinSemana++;
             }
             gcal1.add(Calendar.DAY_OF_YEAR, 1);
@@ -79,7 +94,6 @@ public class Calculos {
     public static boolean verificarQueHayaFecha(java.util.Date inicio, java.util.Date ultimo) {
 
         if (inicio != null & ultimo != null) {
-
 
             if (inicio.before(ultimo) || inicio.equals(ultimo)) {
                 return true;
@@ -103,7 +117,7 @@ public class Calculos {
         if (gcal1.getTime().getDay() == 0) {
             gcal1.add(Calendar.DAY_OF_YEAR, 1);
         }
-        
+
         return gcal1.getTime();
 
     }

@@ -3,11 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Vacaciones_App/src/vacaciones/VacacionesMod.java</file>
             <file>file:/D:/Vacaciones_App/src/vacaciones/visual/vacaciones.java</file>
-            <file>file:/D:/Vacaciones_App/src/vacaciones/Vacaciones.java</file>
-            <file>file:/D:/Vacaciones_App/src/vacaciones/DB/vacacionesDAO.java</file>
-            <file>file:/D:/Vacaciones_App/src/vacaciones/visual/home.java</file>
+            <file>file:/D:/Vacaciones_App/src/vacaciones/Conexion.java</file>
             <file>file:/D:/Vacaciones_App/src/vacaciones/Excel.java</file>
         </group>
     </open-files>

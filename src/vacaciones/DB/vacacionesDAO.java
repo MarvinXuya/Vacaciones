@@ -22,6 +22,7 @@ public class vacacionesDAO {
     private String INSERT_ACTION = "EXEC agregarAccionPersonal ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?;";
     private String LOAD_SOME = "EXEC ListarAccionPorColaborador ?;"; 
     private String UPDATE = "EXEC ModifAccionPersonal ?,?,?, ?,?,?,?,?,?,?,?,?,?,?,?;";
+    private String DELETE = "EXEC EliminarAccionPersonal ?,?,?, ?,?,?,?,?,?,?,?,?,?,?,?;";
     private String fechaEmision;
     private String fechaEfectivo;
     private String emitidoPor;
@@ -230,5 +231,38 @@ public class vacacionesDAO {
         connection.close();
     }
     
+     public void EliminarAccion(VacacionesMod vacacion, Connection connection) throws Exception {
+        try (PreparedStatement ps = connection.prepareStatement(DELETE)) {
+            
+            ps.setInt(1, vacacion.getCodigoEmpleadoMod());
+            ps.setString(2, vacacion.getFechaEmisionMod());
+            ps.setString(3, vacacion.getVacacionesAlMod());
+            
+            ps.setString(4, vacacion.getFechaEmision());
+            ps.setInt(5, vacacion.getDíasVacaciones());
+            ps.setString(6, vacacion.getObservaciones());
+            ps.setString(7, vacacion.getVacacionesDel());
+            ps.setString(8, vacacion.getVacacionesAl());
+            String noString = null;
+            if (vacacion.getVacacionesDel2() == null) {
+                ps.setString(9, noString);
+            } else {
+                ps.setString(9, vacacion.getVacacionesDel2());
+            }
+            if (vacacion.getVacacionesAl2() == null) {
+                ps.setString(10, noString);
+            } else {
+                ps.setString(10, vacacion.getVacacionesAl2());
+            }
+            ps.setInt(11, vacacion.getTipoCampus());
+            ps.setInt(12, vacacion.getTipoColaborador());
+            ps.setInt(13, vacacion.getTipoDocumento());            
+            ps.setString(14, vacacion.getEmitidoPor());                      
+            ps.setString(15, vacacion.getRegresaLaborar());            
+
+            ps.execute();
+        }
+        connection.close();
+    }
     
 }
