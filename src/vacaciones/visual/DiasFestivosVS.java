@@ -79,7 +79,7 @@ public class DiasFestivosVS extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
 
-        setTitle("SMU - Días Festivos");
+        setTitle("JMX - Días Festivos");
 
         jLabel1.setText("Día:");
 

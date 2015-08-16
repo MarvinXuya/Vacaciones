@@ -506,7 +506,7 @@ public class vacaciones extends javax.swing.JFrame {
                         jLabel2.setText(c.getApellido());
                         jLabel12.setText(c.getDisponible());
                         verificador = c.getNombre();
-                        NombreApellido = (c.getNombre()) + (c.getApellido());
+                        NombreApellido = (c.getNombre()) +" "+ (c.getApellido());
                         //colaboradoresDAO col = new colaboradoresDAO();
                         // -----> se agregan 20 dias por año actual <------//
                         col.BuscarColaboradoresAgregarVacaciones(codigoBuscar, Conexion.getConnection());
@@ -645,7 +645,7 @@ public class vacaciones extends javax.swing.JFrame {
         jMenuItem3 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("SMU - Acción de personal");
+        setTitle("JMX - Acción de personal");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
@@ -1303,7 +1303,8 @@ public class vacaciones extends javax.swing.JFrame {
         } catch (IOException ex1) {
             Logger.getLogger(home.class.getName()).log(Level.SEVERE, null, ex1);
         }
-        jButton8.setEnabled(false);
+        JOptionPane.showMessageDialog(null, "Se ha actualizado con datos de "+NombreApellido +".\n El archivo: ListadoIndividual.xls", "Nuevo archivo actualizado", JOptionPane.INFORMATION_MESSAGE);
+        //jButton3.setEnabled(false);
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed

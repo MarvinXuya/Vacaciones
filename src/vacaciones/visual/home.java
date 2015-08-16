@@ -348,7 +348,7 @@ public class home extends javax.swing.JFrame {
         );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("SMU");
+        setTitle("JMX");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Colaboradores"));
 
@@ -953,6 +953,7 @@ jButton8.setEnabled(true);
         } catch (IOException ex1) {
             Logger.getLogger(home.class.getName()).log(Level.SEVERE, null, ex1);
         }
+        JOptionPane.showMessageDialog(null, "Archivo: Listado.xls", "Archivo actualizado ahora disponible", JOptionPane.INFORMATION_MESSAGE);
         jButton8.setEnabled(false);
     }//GEN-LAST:event_jButton8ActionPerformed
 
